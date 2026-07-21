@@ -1,0 +1,274 @@
+{
+  "name": "Weather_Gmail",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a2ac71ae-ef5b-4319-92fb-d245f1f5c7b2",
+      "name": "When chat message received",
+      "webhookId": "e8493e8c-ce51-423a-b0c6-79661cdc6f01"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0381b220-e218-4742-a8cf-75d771ba8974",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        208
+      ],
+      "id": "b8e9ed3e-0b63-4ce8-8ea0-eab29b270e73",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "09VjAKyRpLZTP4nx",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        304,
+        208
+      ],
+      "id": "1ed90c71-5d30-4bb9-a4c7-99312050e420",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', `A short and relevant subject for the email.`, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        96
+      ],
+      "id": "d7af041e-4a84-4980-8af9-3d54a081cf63",
+      "name": "Send a message in Gmail",
+      "webhookId": "e0ec8a04-7e19-4cdb-9b59-fed1371ec324",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VoNMDbfP1PtvhblU",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+        "language": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Language', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        416,
+        256
+      ],
+      "id": "45f2d88c-40fe-4a48-80d6-87837ec14d3d",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "Ue81Kdl2PgOYIjXu",
+          "name": "OpenWeatherMap account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Append a new row to the fixed Google Sheet named \"n8N_SHEETS\" in the \"Sheet1\" tab.\n\nUse this tool whenever the user asks to save information to Google Sheets.\n\nDo not ask the user for spreadsheet IDs, sheet names, permissions, or confirmation if the request is clear.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1LUXxEoxMRZQ8W8doO7VDUzXqBihC6s1dRIrzB_hUQLo",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LUXxEoxMRZQ8W8doO7VDUzXqBihC6s1dRIrzB_hUQLo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "City": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}",
+            "Date ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date_', ``, 'string') }}",
+            "Weather": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Weather', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "xc/,m.,xm"
+          ],
+          "schema": [
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date ",
+              "displayName": "Date ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Weather",
+              "displayName": "Weather",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        112
+      ],
+      "id": "d80b3dca-01da-40fd-aa2a-86e20aa6ef9f",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lCYkimZpBbwnpRWo",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "9c2da36c-aefb-4130-9f2e-9f6cf9e6869e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9991e15c3201a320272af65abe1d7733ac1e471673810dbf05e38812748215c1"
+  },
+  "nodeGroups": [],
+  "id": "fXtLHtDjS1gukcrN",
+  "tags": []
+}
