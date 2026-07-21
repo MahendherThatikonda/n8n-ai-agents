@@ -1,0 +1,154 @@
+{
+  "name": "MarketStack",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d207c985-973e-4082-8686-d055f48b5611",
+      "name": "When chat message received",
+      "webhookId": "45b94b81-bde3-4c7f-bbd7-d9ea76e1c293"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d494eaff-95d3-432d-bd5f-998f05d4e4f4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "801ae1b5-ef43-4337-a506-63c7b2368e49",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "09VjAKyRpLZTP4nx",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "4b56c215-c6fa-46e0-9498-38e8a0b522c5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "You are a stock market assistant.\n\nWhenever the user asks about any stock, company share price, market data, or trading information, you MUST call the Stock Price Lookup tool.\n\nDo not answer from memory.",
+        "symbols": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Ticker', ``, 'string') }}",
+        "returnAll": true,
+        "filters": {
+          "latest": true
+        }
+      },
+      "type": "n8n-nodes-base.marketstackTool",
+      "typeVersion": 1,
+      "position": [
+        368,
+        208
+      ],
+      "id": "735a690b-7520-4f2a-a5fe-5432c32fc9ee",
+      "name": "Get many EoD data in Marketstack",
+      "credentials": {
+        "marketstackApi": {
+          "id": "lJzLT3xtmmDK2gcJ",
+          "name": "Marketstack account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many EoD data in Marketstack": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "9f8d48a5-ea85-4d8f-ae6c-e3cda002575e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9991e15c3201a320272af65abe1d7733ac1e471673810dbf05e38812748215c1"
+  },
+  "nodeGroups": [],
+  "id": "bU7WrDCrb3EhdMkK",
+  "tags": []
+}
